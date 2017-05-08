@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 def read():
     table = []
-    with open("stories.csv", "r") as data:
+    with open("/home/tanacs/super-sprinter-3000-davidtanacs/stories.csv", "r") as data:
         for line in data:
             lines = line.replace("\n", "")
             words = lines.split(',')
@@ -39,13 +39,15 @@ def add_new():
 
 @app.route('/add_new', methods=['GET', 'POST'])
 def new_story():
+    table = read()
+    new_id = add_ID(table)
     name = request.args.get('name')
     story = request.args.get('story')
     criteria = request.args.get('criteria')
     value = request.args.get('value')
     estimation = request.args.get('estimation')
     status = request.args.get('status')
-    storylist = [name, story, criteria, value, estimation, status]
+    storylist = [new_id, name, story, criteria, value, estimation, status]
     with open('/home/tanacs/super-sprinter-3000-davidtanacs/stories.csv', 'a') as f:
         for i in storylist:
             f.writelines(i + ",")
