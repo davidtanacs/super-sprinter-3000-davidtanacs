@@ -27,7 +27,8 @@ def add_ID(table):
 
 @app.route('/')
 def root():
-    return render_template('list.html', title=titles)
+    table = read()
+    return render_template('list.html', title=titles, stories=table)
 
 titles = ["Add new Story", "Edit Story"]
 
@@ -52,7 +53,8 @@ def new_story():
         for i in storylist:
             f.writelines(i + ",")
         f.write('\n')
-    return render_template('list.html', title=titles)
+    fresh_table = read()
+    return render_template('list.html', title=titles, stories=fresh_table)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -63,4 +65,4 @@ def updated_list():
 
 
 if __name__ == "__main__":
-    app.run(debug=True) 
+    app.run(debug=True)
