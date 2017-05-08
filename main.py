@@ -25,14 +25,12 @@ def add_ID(table):
 @app.route('/')
 def root():
     table = read()
-    return render_template('list.html', title=titles, stories=table)
-
-titles = ["Add new Story", "Edit Story"]
+    return render_template('list.html', stories=table)
 
 
-@app.route('/new_story', methods=['GET', 'POST'])
+@app.route('/story', methods=['GET', 'POST'])
 def add_new():
-    return render_template('form.html', title=titles)
+    return render_template('form.html')
 
 
 @app.route('/add_new', methods=['GET', 'POST'])
@@ -51,11 +49,7 @@ def new_story():
             f.writelines(word + ",")
         f.write('\n')
     fresh_table = read()
-    return render_template('list.html', title=titles, stories=fresh_table)
-
-
-#@app.route('/story/<story_id>')
-#def update():
+    return render_template('list.html', stories=fresh_table)
 
 
 @app.route('/story/<story_id>/del', methods=['POST'])
@@ -71,7 +65,6 @@ def delete(story_id):
                 f.write("\n")
     updated_table = read()
     return redirect("/", )
-
 
 
 if __name__ == "__main__":
