@@ -28,6 +28,16 @@
         <td>{{ item[4] }}</td>
         <td>{{ item[5] }}</td>
         <td>{{ item[6] }}</td>
+        <td align="middle">
+                    <form action="story/{{ item[0] }}" method="POST">
+                        <input type="image" name="edit_button" src="http://www.clker.com/cliparts/L/L/X/8/n/R/edit-button-hi.png" alt="Submit" width="60">
+                    </form>
+                </td>
+                <td align="middle">
+                    <form action="/story/{{ item[0] }}/del" method="POST">
+                        <input type="image" name="delete_button" src="http://www.clker.com/cliparts/W/M/7/n/R/O/delete-button-hi.png"
+                            width="60">
+                </td>
     </tr>
 {% endfor %}
 </table>

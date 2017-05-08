@@ -1,9 +1,5 @@
-from flask import Flask, render_template, request
-from jinja2 import *
-import os
-import csv
-import sys
-import html
+from flask import *
+
 app = Flask(__name__)
 
 
@@ -18,13 +14,14 @@ def read():
 
 
 def add_ID(table):
-    ID = len(table)
+    ID = len(table) + 1
     for story in table:
         if ID == story[0]:
             ID += 1
     return str(ID)
 
 
+@app.route('/list')
 @app.route('/')
 def root():
     table = read()
@@ -50,18 +47,31 @@ def new_story():
     status = request.args.get('status')
     storylist = [new_id, name, story, criteria, value, estimation, status]
     with open('/home/tanacs/super-sprinter-3000-davidtanacs/stories.csv', 'a') as f:
-        for i in storylist:
-            f.writelines(i + ",")
+        for word in storylist:
+            f.writelines(word + ",")
         f.write('\n')
     fresh_table = read()
     return render_template('list.html', title=titles, stories=fresh_table)
 
 
-@app.route('/', methods=['GET', 'POST'])
-def updated_list():
-    with open('/home/tanacs/super-sprinter-3000-davidtanacs/stories.csv', 'r') as f:
-        stories = [word for line in f for word in line.split(",")]
-    return render_template('list.html', stories=stories)
+#@app.route('/story/<story_id>')
+#def update():
+
+
+@app.route('/story/<story_id>/del', methods=['POST'])
+def delete(story_id):
+    table = read()
+    with open('/home/tanacs/super-sprinter-3000-davidtanacs/stories.csv', 'w') as f:
+        for line in table:
+            if line[0] == story_id:
+                del line
+            else:
+                for word in line:
+                    f.writelines(word + ",")
+                f.write("\n")
+    updated_table = read()
+    return redirect("/", )
+
 
 
 if __name__ == "__main__":
