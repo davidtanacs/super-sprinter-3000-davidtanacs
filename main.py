@@ -7,6 +7,24 @@ import html
 app = Flask(__name__)
 
 
+def read():
+    table = []
+    with open("stories.csv", "r") as data:
+        for line in data:
+            lines = line.replace("\n", "")
+            words = lines.split(',')
+            table.append(words)
+    return table
+
+
+def add_ID(table):
+    ID = len(table)
+    for story in table:
+        if ID == story[0]:
+            ID += 1
+    return str(ID)
+
+
 @app.route('/')
 def root():
     return render_template('list.html', title=titles)
